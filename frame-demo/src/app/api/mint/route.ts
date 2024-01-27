@@ -41,10 +41,13 @@ async function mint(to: string) {
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const query = req.nextUrl.searchParams;
   const to = query.get('to');
+  console.log(`Url: ${req.url}`);
   if (!to) {
     throw new Error("no to address");
   }
   const hash = await mint(to);
+  console.log(`To: ${to} .. Sepolia Hash : ${hash}`);
+
   return new NextResponse(`
       <!DOCTYPE html>
           <html>
@@ -55,7 +58,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
               <meta name="fc:frame" content="vNext">
               <meta name="fc:frame:image" content="https://frame-demo.vercel.app/success.png">
               <meta name="fc:frame:post_url" content="https://frame-demo.vercel.app/api/mint">
-              <meta name="fc:frame:button:1" content="Mint Hash: ${hash}">
+              <meta name="fc:frame:button:1" content="Minted to: ${to}">
             </head>
             <body>
               <p>Testing Complete</p>
@@ -67,9 +70,5 @@ export async function POST(req: NextRequest): Promise<Response> {
     return getResponse(req);
 }
 
-export async function GET(req: NextRequest): Promise<Response> {
-  mint("0xd11BAA5966e266396e9Ed723C96B613B9C39620c")
-  return new NextResponse('');
-}
 
 export const dynamic = 'force-dynamic';
