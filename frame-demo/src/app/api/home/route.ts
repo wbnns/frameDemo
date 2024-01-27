@@ -44,7 +44,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       <!DOCTYPE html>
           <html>
             <head>
-              <title>Vote Recorded</title>
+              <title>Mint!</title>
               <meta property="og:title" content="Tested!">
               <meta property="og:image" content="https://frame-demo.vercel.app/success.png">
               <meta name="fc:frame" content="vNext">
