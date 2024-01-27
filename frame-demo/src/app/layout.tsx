@@ -19,7 +19,7 @@ export default function RootLayout({
       <head>
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="https://frame-demo.vercel.app/mint.png" />
-        <meta property="fc:frame:button:1" content="Testing" />
+        <meta property="fc:frame:button:1" content="Mint ->" />
         <meta property="fc:frame:post_url" content="https://frame-demo.vercel.app/api/home" />
 
         <meta property="og:title" content="TEST" />

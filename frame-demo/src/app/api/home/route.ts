@@ -45,7 +45,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           <html>
             <head>
               <title>Mint!</title>
-              <meta property="og:title" content="Tested!">
+              <meta property="og:title" content="Mint!">
               <meta property="og:image" content="https://frame-demo.vercel.app/mint.png">
               <meta name="fc:frame" content="vNext">
               <meta name="fc:frame:image" content="https://frame-demo.vercel.app/mint.png">
@@ -61,9 +61,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 }
 export async function POST(req: NextRequest): Promise<Response> {
     return getResponse(req);
-}
-export async function GET(req: NextRequest): Promise<Response> {
-  return getResponse(req);
 }
 
 
