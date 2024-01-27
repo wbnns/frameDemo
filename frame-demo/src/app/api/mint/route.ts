@@ -41,8 +41,5 @@ export async function POST(req: NextRequest): Promise<Response> {
     return getResponse(req);
 }
 
-export async function GET(req: NextRequest): Promise<Response> {
-  return getResponse();
-}
 
 export const dynamic = 'force-dynamic';
