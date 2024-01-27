@@ -5,7 +5,7 @@ const client = getSSLHubRpcClient("nemes.farcaster.xyz:2283");
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let validatedMessage: Message | undefined = undefined;
   let signer: `0x${string}` | undefined = undefined;
-  let fid= "";
+  let fid= 0;
   try {
     const body = await req.json();
     const frameMessage = Message.decode(Buffer.from(body?.trustedData?.messageBytes || '', 'hex'));
