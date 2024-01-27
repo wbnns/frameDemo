@@ -5,6 +5,7 @@ const client = getSSLHubRpcClient("nemes.farcaster.xyz:2283");
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let validatedMessage: Message | undefined = undefined;
   let signer: `0x${string}` | undefined = undefined;
+  let fid= "";
   try {
     const body = await req.json();
     const frameMessage = Message.decode(Buffer.from(body?.trustedData?.messageBytes || '', 'hex'));
@@ -14,6 +15,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       signer = '0x' + Buffer.from(result.value.message.signer).toString('hex')
 
     }
+    fid = validatedMessage?.data?.fid || 0;
   } catch (err) {
     console.error(err);
   }
@@ -28,7 +30,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
               <meta name="fc:frame" content="vNext">
               <meta name="fc:frame:image" content="https://frame-demo.vercel.app/success.png">
               <meta name="fc:frame:post_url" content="https://frame-demo.vercel.app/api/mint">
-              <meta name="fc:frame:button:1" content="${signer}">
+              <meta name="fc:frame:button:1" content="${fid}">
             </head>
             <body>
               <p>Testing Complete</p>
