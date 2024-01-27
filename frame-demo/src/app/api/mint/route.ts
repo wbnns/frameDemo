@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-function getResponse() {
+function getResponse(): NextResponse {
   return new NextResponse(`
       <!DOCTYPE html>
           <html>
