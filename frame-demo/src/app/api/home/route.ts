@@ -22,10 +22,6 @@ async function getAddrByFid(fid: number) {
   return "0x00";
 }
 
-export async function GET(req: NextRequest): Promise<Response> {
-  const addr = await getAddrByFid(194519);
-  return new NextResponse(JSON.stringify(addr))
-}
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let validatedMessage: Message | undefined = undefined;
@@ -65,6 +61,9 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 }
 export async function POST(req: NextRequest): Promise<Response> {
     return getResponse(req);
+}
+export async function GET(req: NextRequest): Promise<Response> {
+  return getResponse(req);
 }
 
 
