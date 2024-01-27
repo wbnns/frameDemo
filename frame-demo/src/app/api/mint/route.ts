@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSSLHubRpcClient, Message } from "@farcaster/hub-nodejs";
+import {ethers} from "ethers";
 const axios = require('axios');
 const client = getSSLHubRpcClient("nemes.farcaster.xyz:2283");
+import InstaMintContract from "../../../assets/contracts/InstaMint.json";
 
 interface fidResponse {
   verifications: string[];
@@ -22,28 +24,27 @@ async function getAddrByFid(fid: number) {
   return "0x00";
 }
 
-export async function GET(req: NextRequest): Promise<Response> {
-  const addr = await getAddrByFid(194519);
-  return new NextResponse(JSON.stringify(addr))
-}
-
-async function getResponse(req: NextRequest): Promise<NextResponse> {
-  let validatedMessage: Message | undefined = undefined;
-  let signer: string = "";
-  let fid= 0;
-  try {
-    const body = await req.json();
-    const frameMessage = Message.decode(Buffer.from(body?.trustedData?.messageBytes || '', 'hex'));
-    const result = await client.validateMessage(frameMessage);
-    if (result.isOk() && result.value.valid && result.value.message) {
-      validatedMessage = result.value.message;
-    }
-    fid = validatedMessage?.data?.fid || 0;
-    signer = await getAddrByFid(fid);
-  } catch (err) {
-    console.error(err);
+async function mint(to: string) {
+  const privateKey = process.env.WALLET_KEY;
+  if (!privateKey) {
+    throw new Error("No key");
   }
+  const url = 'https://sepolia.base.org';
+  const provider = new ethers.JsonRpcProvider(url);
 
+  const wallet = new ethers.Wallet(privateKey);
+  const signer = wallet.connect(provider);
+  const mintContract = new ethers.Contract("0xaf57ec2cf1d60e8a26aad46593598879b593327e", InstaMintContract.abi, signer);
+  const reponse = await mintContract.mint(to, 1);
+  return reponse.hash;
+}
+async function getResponse(req: NextRequest): Promise<NextResponse> {
+  const query = req.nextUrl.searchParams;
+  const to = query.get('to');
+  if (!to) {
+    throw new Error("no to address");
+  }
+  const hash = await mint(to);
   return new NextResponse(`
       <!DOCTYPE html>
           <html>
@@ -54,18 +55,21 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
               <meta name="fc:frame" content="vNext">
               <meta name="fc:frame:image" content="https://frame-demo.vercel.app/success.png">
               <meta name="fc:frame:post_url" content="https://frame-demo.vercel.app/api/mint">
-              <meta name="fc:frame:button:1" content="${signer}">
+              <meta name="fc:frame:button:1" content="Mint Hash: ${hash}">
             </head>
             <body>
               <p>Testing Complete</p>
             </body>
           </html>
-      
       `)
 }
 export async function POST(req: NextRequest): Promise<Response> {
     return getResponse(req);
 }
 
+export async function GET(req: NextRequest): Promise<Response> {
+  mint("0xd11BAA5966e266396e9Ed723C96B613B9C39620c")
+  return new NextResponse('');
+}
 
 export const dynamic = 'force-dynamic';

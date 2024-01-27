@@ -46,10 +46,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
             <head>
               <title>Mint!</title>
               <meta property="og:title" content="Tested!">
-              <meta property="og:image" content="https://frame-demo.vercel.app/success.png">
+              <meta property="og:image" content="https://frame-demo.vercel.app/mint.png">
               <meta name="fc:frame" content="vNext">
-              <meta name="fc:frame:image" content="https://frame-demo.vercel.app/success.png">
-              <meta name="fc:frame:post_url" content="https://frame-demo.vercel.app/api/mint">
+              <meta name="fc:frame:image" content="https://frame-demo.vercel.app/mint.png">
+              <meta name="fc:frame:post_url" content="https://frame-demo.vercel.app/api/mint?to=${signer}">
               <meta name="fc:frame:button:1" content="Mint To: ${signer}">
             </head>
             <body>
